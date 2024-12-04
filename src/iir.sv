@@ -1,4 +1,4 @@
-module iir #(parameter OPSIZE = 8, RANK = 2)
+module iir #(parameter OPSIZE = 16, RANK = 2)
 (
 	input logic clk,
 	input logic start,

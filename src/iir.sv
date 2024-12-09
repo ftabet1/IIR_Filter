@@ -9,7 +9,7 @@ module iir #(parameter OPSIZE = 16, RANK = 2)
 );
 
     //coefficient block {{xn..xn-RANK}, {yn-1..yn-RANK}}
-    logic [OPSIZE-1:0] ROM[0:RANK*2+1] = {16'h8001, 16'h7fff, 0, 0, 0, 0}; 
+    logic [OPSIZE-1:0] ROM[0:RANK*2+1] = {16'h251E, 16'hB508, 16'h251E, 0, 16'h15F6, 0}; 
     
     //delay chains
     logic wr_x, wr_y;
@@ -126,12 +126,14 @@ module iir_test;
     integer cnt = 0;
     logic clk = 0, reset = 0, ready, start = 0;
     logic[OPSIZE-1:0]xin, yout;
-    
+    logic[OPSIZE-1:0]y_out=0; 
     iir #(OPSIZE, RANK) uut(clk, start, reset, xin, yout, ready);
     
     always #1 clk = ~clk;
     
     initial begin
+		$dumpfile("test.wcd");
+		$dumpvars(0, iir_test);
         reset = 1;
         start = 0;
         xin = 0;
@@ -145,17 +147,15 @@ module iir_test;
         while(1) begin
             #2
             if(ready) begin
-                if(cnt == 0) begin
-                    xin = 16'h7FFF;
-                end
                 cnt++;
                 start = 1;
                 $display("%H\n", yout);
+				y_out = yout;
                 #2
                 start = 0;
                 xin = 0;
             end
-            if(cnt == 6) begin
+            if(cnt == 10) begin
                 $finish;
             end
         end

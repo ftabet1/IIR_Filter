@@ -34,7 +34,7 @@ module testmac;
 	reg[opsize-1:0] B = 0;
 	always #1 clk = ~clk;
 	
-	reg int cnt = 0;
+	reg [5:0] cnt = 0;
 	reg [opsize-1:0] Ain [0:6]; //= {48, 48, -48, -1, 127};
 	reg [opsize-1:0] Bin [0:6];
 	
